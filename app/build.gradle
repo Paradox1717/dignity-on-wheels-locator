@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "example.com.test"
+        applicationId "dignityonwheels.org.locator"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
