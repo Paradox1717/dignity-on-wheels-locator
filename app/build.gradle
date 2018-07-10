@@ -27,4 +27,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'com.google.apis:google-api-services-calendar:v3-rev328-1.23.0'
+    implementation group: 'com.google.api-client', name: 'google-api-client-android', version: '1.23.0'
 }
