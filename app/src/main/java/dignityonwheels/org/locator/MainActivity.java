@@ -1,8 +1,8 @@
 package dignityonwheels.org.locator;
 
 import android.content.res.AssetManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import java.io.File;
@@ -10,6 +10,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
     public static AssetManager assets;
     public static File cacheDir;
+    public static TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Location location = new Location(0);
+        text = findViewById(R.id.text);
 
-        TextView text = findViewById(R.id.text);
-        text.setText(location.getMessage());
+        new GetLocationTask().execute(0);
     }
 }
