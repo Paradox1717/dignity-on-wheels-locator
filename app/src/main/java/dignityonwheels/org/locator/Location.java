@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Location {
     private int day;
-    private String message;
+    private String[] message;
 
     private static String cleanDateTime(DateTime dateTime) {
         Date date = new Date(dateTime.getValue());
@@ -32,7 +32,7 @@ public class Location {
     }
 
     public Location(int day) {
-        message = "";
+        this.day = day;
 
         Calendar service;
 
@@ -51,26 +51,29 @@ public class Location {
         }
 
         try {
-            Date today = new Date(System.currentTimeMillis());
-            today.setHours(1);
-            today.setMinutes(0);
-            today.setSeconds(0);
+            Date lower = new Date(System.currentTimeMillis());
+            lower.setDate(lower.getDate() + day);
+            lower.setHours(1);
+            lower.setMinutes(0);
+            lower.setSeconds(0);
 
-            Date tomorrow = (Date) today.clone();
-            tomorrow.setHours(22);
+            Date upper = (Date) lower.clone();
+            upper.setHours(22);
 
             Events list = service.events().list("dignityonwheels.org_ir9db41bmvs6s5g926c0od0guk@group.calendar.google.com")
                     .setOrderBy("startTime")
                     .setSingleEvents(true)
-                    .setTimeMax(new DateTime(tomorrow))
-                    .setTimeMin(new DateTime(today))
+                    .setTimeMax(new DateTime(upper))
+                    .setTimeMin(new DateTime(lower))
                     .execute();
 
             List<Event> events = list.getItems();
-            for(Event event: events) {
-                message += event.getSummary() + "\n"
-                        + event.getLocation() + "\n"
-                        + cleanDateTime(event.getStart().getDateTime()) + " - " + cleanDateTime(event.getEnd().getDateTime()) + "\n\n";
+            message = new String[events.size()];
+
+            for(int i = 0; i < events.size(); i++) {
+                message[i] = events.get(i).getSummary() + "\n"
+                        + events.get(i).getLocation() + "\n"
+                        + cleanDateTime(events.get(i).getStart().getDateTime()) + " - " + cleanDateTime(events.get(i).getEnd().getDateTime());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -81,7 +84,7 @@ public class Location {
         return day;
     }
 
-    public String getMessage() {
+    public String[] getMessage() {
         return message;
     }
 }
